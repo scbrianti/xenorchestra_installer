@@ -13,7 +13,7 @@ git clone -b stable https://github.com/vatesfr/xo-web
 cd xo-server
 sudo npm install && npm run build
 cp sample.config.yaml .xo-server.yaml
-sed /mounts/a\\"    '/': '/opt/xo-web/dist'" .xo-server.yaml
+sed -i /mounts/a\\"    '/': '/opt/xo-web/dist'" .xo-server.yaml
 cd /opt/xo-web
 sudo npm i lodash.trim@3.0.1
 sudo npm install

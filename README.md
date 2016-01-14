@@ -1,8 +1,14 @@
 # xenorchestra_installer
-You'll need to install zip to unzip the file
 
-upzip master
+The single line installation required the following steps from a root shell. 
 
-chmod +x /xenorchestra_install/xo_install.sh
+Confirm your VM's IP Address before starting the script so you know where to login to. 
 
-Run the installer with from a root shell so sudo bash and then " ./xo_install.sh "
+The default username and password are applied, admin@admin.net and admin for the password
+
+    sudo bash
+    <password>
+    sudo curl https://raw.githubusercontent.com/scottalanmiller/xenorchestra_installer/master/xo_install.sh | bash
+    <password>
+    
+    

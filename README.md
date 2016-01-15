@@ -12,3 +12,4 @@ The default username and password are applied, admin@admin.net and admin for the
     <password>
     
     
+For NFS capabilities run "apt-get install nfs-common" if not already installed.

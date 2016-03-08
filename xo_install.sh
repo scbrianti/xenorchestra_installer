@@ -17,5 +17,23 @@ cd /opt/xo-web
 sudo npm i lodash.trim@3.0.1
 sudo npm install
 sudo npm run build
-cd /opt/xo-server
-sudo npm start
+cat > /etc/systemd/system/xo-server.service <<EOF
+# systemd service for XO-Server.
+
+[Unit]
+Description= XO Server
+After=network-online.target
+
+[Service]
+WorkingDirectory=/opt/xo-server/
+ExecStart=/usr/local/bin/node ./bin/xo-server
+Restart=always
+SyslogIdentifier=xo-server
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo chmod +x /etc/systemd/system/xo-server.service
+sudo systemctl enable xo-server.service
+sudo systemctl start xo-server.service

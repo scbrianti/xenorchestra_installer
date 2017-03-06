@@ -2,6 +2,8 @@
 sudo apt-get install --yes nfs-common
 cd /opt
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get install --yes nodejs
 curl -o /usr/local/bin/n https://raw.githubusercontent.com/visionmedia/n/master/bin/n
 sudo chmod +x /usr/local/bin/n
@@ -15,8 +17,7 @@ sudo cp sample.config.yaml .xo-server.yaml
 sudo sed -i /mounts/a\\"    '/': '/opt/xo-web/dist'" .xo-server.yaml
 cd /opt/xo-web
 sudo npm i lodash.trim@3.0.1
-sudo npm install
-sudo npm run build
+yarn install --force
 cat > /etc/systemd/system/xo-server.service <<EOF
 # systemd service for XO-Server.
 

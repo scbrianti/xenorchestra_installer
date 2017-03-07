@@ -4,7 +4,8 @@ cd /opt
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get install --yes nodejs
+sudo apt-get update
+sudo apt-get install --yes nodejs yarn
 curl -o /usr/local/bin/n https://raw.githubusercontent.com/visionmedia/n/master/bin/n
 sudo chmod +x /usr/local/bin/n
 sudo n stable

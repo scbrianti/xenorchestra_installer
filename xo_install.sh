@@ -3,14 +3,13 @@
 xo_branch="stable"
 xo_server="https://github.com/vatesfr/xo-server"
 xo_web="https://github.com/vatesfr/xo-web"
-
 n_repo="https://raw.githubusercontent.com/visionmedia/n/master/bin/n"
-
 yarn_repo="deb https://dl.yarnpkg.com/debian/ stable main"
 node_source="https://deb.nodesource.com/setup_5.x"
 yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
-
 n_location="/usr/local/bin/n"
+xo_server_dir="/opt/xo-server"
+xo_web_dir="/opt/xo-web"
 
 sudo apt-get install --yes nfs-common
 cd /opt
@@ -25,11 +24,11 @@ sudo n stable
 sudo apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils
 git clone -b $xo_branch $xo_server
 git clone -b $xo_branch $xo_web
-cd xo-server
+cd $xo_server_dir
 sudo npm install && npm run build
 sudo cp sample.config.yaml .xo-server.yaml
 sudo sed -i /mounts/a\\"    '/': '/opt/xo-web/dist'" .xo-server.yaml
-cd /opt/xo-web
+cd $xo_web_dir
 yarn install --force
 cat > /etc/systemd/system/xo-server.service <<EOF
 # systemd service for XO-Server.

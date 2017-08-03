@@ -34,7 +34,7 @@ sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git 
 cd $xo_server_dir
 sudo npm install && npm run build
 sudo cp sample.config.yaml .xo-server.yaml
-sudo sed -i /mounts/a\\"    '/': '/opt/xo-web/dist'" .xo-server.yaml
+sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xo-web/dist'|" .xo-server.yaml
 cd $xo_web_dir
 yarn install --force
 

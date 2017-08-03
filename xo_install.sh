@@ -1,4 +1,9 @@
 #!/bin/bash
+
+xo_branch="stable"
+xo_server="https://github.com/vatesfr/xo-server"
+xo_web="https://github.com/vatesfr/xo-web"
+
 sudo apt-get install --yes nfs-common
 cd /opt
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
@@ -10,8 +15,8 @@ curl -o /usr/local/bin/n https://raw.githubusercontent.com/visionmedia/n/master/
 sudo chmod +x /usr/local/bin/n
 sudo n stable
 sudo apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils
-git clone -b stable https://github.com/vatesfr/xo-server
-git clone -b stable https://github.com/vatesfr/xo-web
+git clone -b $xo_branch $xo_server
+git clone -b $xo_branch $xo_web
 cd xo-server
 sudo npm install && npm run build
 sudo cp sample.config.yaml .xo-server.yaml

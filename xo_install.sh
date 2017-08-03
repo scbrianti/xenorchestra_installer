@@ -10,43 +10,54 @@ yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
 n_location="/usr/local/bin/n"
 xo_server_dir="/opt/xo-server"
 xo_web_dir="/opt/xo-web"
+systemd_service_dir="/lib/systemd/system"
+xo_service="xo-server.service"
 
-sudo apt-get install --yes nfs-common
+#Install node and yarn
 cd /opt
-curl -sL $node_source | sudo -E bash -
-curl -sS $yarn_gpg | sudo apt-key add -
+/usr/bin/curl -sL $node_source | sudo -E bash -
+/usr/bin/curl -sS $yarn_gpg | sudo apt-key add -
 echo "$yarn_repo" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update
-sudo apt-get install --yes nodejs yarn
-curl -o $n_location $n_repo
-sudo chmod +x $n_location
-sudo n stable
-sudo apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils
-git clone -b $xo_branch $xo_server
-git clone -b $xo_branch $xo_web
+sudo /usr/bin/apt-get update
+sudo /usr/bin/apt-get install --yes nodejs yarn
+
+#Install n
+/usr/bin/curl -o $n_location $n_repo
+sudo /bin/chmod +x $n_location
+sudo /usr/local/bin/n stable
+
+#Install XO dependencies
+sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils nfs-common
+
+/usr/bin/git clone -b $xo_branch $xo_server
+/usr/bin/git clone -b $xo_branch $xo_web
 cd $xo_server_dir
 sudo npm install && npm run build
 sudo cp sample.config.yaml .xo-server.yaml
 sudo sed -i /mounts/a\\"    '/': '/opt/xo-web/dist'" .xo-server.yaml
 cd $xo_web_dir
 yarn install --force
-cat > /etc/systemd/system/xo-server.service <<EOF
-# systemd service for XO-Server.
 
-[Unit]
-Description= XO Server
-After=network-online.target
+if [[ ! -e $xo_systemd_service ]] ; then
 
-[Service]
-WorkingDirectory=/opt/xo-server/
-ExecStart=/usr/local/bin/node ./bin/xo-server
-Restart=always
-SyslogIdentifier=xo-server
+  /bin/cat << EOF >> $xo_systemd_service
+  # systemd service for XO-Server.
 
-[Install]
-WantedBy=multi-user.target
+  [Unit]
+  Description= XO Server
+  After=network-online.target
+
+  [Service]
+  WorkingDirectory=/opt/xo-server/
+  ExecStart=/usr/local/bin/node ./bin/xo-server
+  Restart=always
+  SyslogIdentifier=xo-server
+
+  [Install]
+  WantedBy=multi-user.target
 EOF
+fi
 
-sudo chmod +x /etc/systemd/system/xo-server.service
-sudo systemctl enable xo-server.service
-sudo systemctl start xo-server.service
+sudo /bin/chmod +x $systemd_service_dir/$xo_service
+sudo /bin/systemctl enable $xo_service
+sudo /bin/systemctl start $xo_service

@@ -4,14 +4,20 @@ xo_branch="stable"
 xo_server="https://github.com/vatesfr/xo-server"
 xo_web="https://github.com/vatesfr/xo-web"
 
+n_repo="https://raw.githubusercontent.com/visionmedia/n/master/bin/n"
+
+yarn_repo="deb https://dl.yarnpkg.com/debian/ stable main"
+node_source="https://deb.nodesource.com/setup_5.x"
+yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
+
 sudo apt-get install --yes nfs-common
 cd /opt
-curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+curl -sL $node_source | sudo -E bash -
+curl -sS $yarn_gpg | sudo apt-key add -
+echo "$yarn_repo" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update
 sudo apt-get install --yes nodejs yarn
-curl -o /usr/local/bin/n https://raw.githubusercontent.com/visionmedia/n/master/bin/n
+curl -o /usr/local/bin/n $n_repo
 sudo chmod +x /usr/local/bin/n
 sudo n stable
 sudo apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils

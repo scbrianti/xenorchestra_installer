@@ -36,7 +36,7 @@ sudo /usr/bin/npm install && /usr/bin/npm run build
 sudo cp sample.config.yaml .xo-server.yaml
 sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xo-web/dist'|" .xo-server.yaml
 cd $xo_web_dir
-yarn install --force
+/usr/bin/yarn install --force
 
 if [[ ! -e $xo_systemd_service ]] ; then
 

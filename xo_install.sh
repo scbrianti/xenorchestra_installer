@@ -40,7 +40,7 @@ cd $xo_web_dir
 
 if [[ ! -e $xo_systemd_service ]] ; then
 
-/bin/cat << EOF >> $xo_systemd_service
+/bin/cat << EOF >> $systemd_service_dir/$xo_service
 # systemd service for XO-Server.
 
 [Unit]

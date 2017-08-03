@@ -40,21 +40,21 @@ cd $xo_web_dir
 
 if [[ ! -e $xo_systemd_service ]] ; then
 
-  /bin/cat << EOF >> $xo_systemd_service
-  # systemd service for XO-Server.
+/bin/cat << EOF >> $xo_systemd_service
+# systemd service for XO-Server.
 
-  [Unit]
-  Description= XO Server
-  After=network-online.target
+[Unit]
+Description= XO Server
+After=network-online.target
 
-  [Service]
-  WorkingDirectory=/opt/xo-server/
-  ExecStart=/usr/local/bin/node ./bin/xo-server
-  Restart=always
-  SyslogIdentifier=xo-server
+[Service]
+WorkingDirectory=/opt/xo-server/
+ExecStart=/usr/local/bin/node ./bin/xo-server
+Restart=always
+SyslogIdentifier=xo-server
 
-  [Install]
-  WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target
 EOF
 fi
 

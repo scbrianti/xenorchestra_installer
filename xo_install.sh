@@ -38,7 +38,7 @@ sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xo-web/dist'|" .xo-serve
 cd $xo_web_dir
 /usr/bin/yarn install --force
 
-if [[ ! -e $xo_systemd_service ]] ; then
+if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
 
 /bin/cat << EOF >> $systemd_service_dir/$xo_service
 # systemd service for XO-Server.

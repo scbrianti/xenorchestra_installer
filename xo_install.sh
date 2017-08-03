@@ -10,6 +10,8 @@ yarn_repo="deb https://dl.yarnpkg.com/debian/ stable main"
 node_source="https://deb.nodesource.com/setup_5.x"
 yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
 
+n_location="/usr/local/bin/n"
+
 sudo apt-get install --yes nfs-common
 cd /opt
 curl -sL $node_source | sudo -E bash -
@@ -17,8 +19,8 @@ curl -sS $yarn_gpg | sudo apt-key add -
 echo "$yarn_repo" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update
 sudo apt-get install --yes nodejs yarn
-curl -o /usr/local/bin/n $n_repo
-sudo chmod +x /usr/local/bin/n
+curl -o $n_location $n_repo
+sudo chmod +x $n_location
 sudo n stable
 sudo apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils
 git clone -b $xo_branch $xo_server

@@ -32,11 +32,10 @@ sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git 
 /usr/bin/git clone -b $xo_branch $xo_server
 /usr/bin/git clone -b $xo_branch $xo_web
 cd $xo_server_dir
-sudo /usr/bin/npm install && /usr/bin/npm run build
+/usr/bin/yarn install --force
 sudo cp sample.config.yaml .xo-server.yaml
 sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xo-web/dist'|" .xo-server.yaml
 cd $xo_web_dir
-/usr/bin/yarn install --force
 
 if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
 

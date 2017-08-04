@@ -1,24 +1,47 @@
 #!/bin/bash
-sudo apt-get install --yes nfs-common
+
+xo_branch="stable"
+xo_server="https://github.com/vatesfr/xo-server"
+xo_web="https://github.com/vatesfr/xo-web"
+n_repo="https://raw.githubusercontent.com/visionmedia/n/master/bin/n"
+yarn_repo="deb https://dl.yarnpkg.com/debian/ stable main"
+node_source="https://deb.nodesource.com/setup_5.x"
+yarn_gpg="https://dl.yarnpkg.com/debian/pubkey.gpg"
+n_location="/usr/local/bin/n"
+xo_server_dir="/opt/xo-server"
+xo_web_dir="/opt/xo-web"
+systemd_service_dir="/lib/systemd/system"
+xo_service="xo-server.service"
+
+#Install node and yarn
 cd /opt
-curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update
-sudo apt-get install --yes nodejs yarn
-curl -o /usr/local/bin/n https://raw.githubusercontent.com/visionmedia/n/master/bin/n
-sudo chmod +x /usr/local/bin/n
-sudo n stable
-sudo apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils
-git clone -b stable https://github.com/vatesfr/xo-server
-git clone -b stable https://github.com/vatesfr/xo-web
-cd xo-server
-yarn install --force
+
+/usr/bin/curl -sL $node_source | sudo -E bash -
+/usr/bin/curl -sS $yarn_gpg | sudo apt-key add -
+echo "$yarn_repo" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo /usr/bin/apt-get update
+sudo /usr/bin/apt-get install --yes nodejs yarn
+
+#Install n
+/usr/bin/curl -o $n_location $n_repo
+sudo /bin/chmod +x $n_location
+sudo /usr/local/bin/n stable
+
+#Install XO dependencies
+sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git python-minimal libvhdi-utils nfs-common
+
+/usr/bin/git clone -b $xo_branch $xo_server
+/usr/bin/git clone -b $xo_branch $xo_web
+cd $xo_server_dir
+/usr/bin/yarn install --force
 sudo cp sample.config.yaml .xo-server.yaml
-sudo sed -i /mounts/a\\"    '/': '/opt/xo-web/dist'" .xo-server.yaml
-cd /opt/xo-web
-yarn install --force
-cat > /etc/systemd/system/xo-server.service <<EOF
+sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xo-web/dist'|" .xo-server.yaml
+cd $xo_web_dir
+/usr/bin/yarn install --force
+
+if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
+
+/bin/cat << EOF >> $systemd_service_dir/$xo_service
 # systemd service for XO-Server.
 
 [Unit]
@@ -34,7 +57,8 @@ SyslogIdentifier=xo-server
 [Install]
 WantedBy=multi-user.target
 EOF
+fi
 
-sudo chmod +x /etc/systemd/system/xo-server.service
-sudo systemctl enable xo-server.service
-sudo systemctl start xo-server.service
+sudo /bin/chmod +x $systemd_service_dir/$xo_service
+sudo /bin/systemctl enable $xo_service
+sudo /bin/systemctl start $xo_service

@@ -32,35 +32,35 @@ sudo /usr/bin/apt-get install --yes build-essential redis-server libpng-dev git 
 
 /usr/bin/git clone -b $xo_branch $xo_server
 /usr/bin/git clone -b $xo_branch $xo_web
-#cd $xo_server_dir
-#/usr/bin/yarn 
-#/usr/bin/yarn build
-#sudo cp sample.config.yaml .xo-server.yaml
-#sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xo-web/dist'|" .xo-server.yaml
-#cd $xo_web_dir
-#/usr/bin/yarn 
-#/usr/bin/yarn build
+cd $xo_server_dir
+/usr/bin/yarn 
+/usr/bin/yarn build
+sudo cp sample.config.yaml .xo-server.yaml
+sudo sed -i "s|#'/': '/path/to/xo-web/dist/'|'/': '/opt/xo-web/dist'|" .xo-server.yaml
+cd $xo_web_dir
+/usr/bin/yarn 
+/usr/bin/yarn build
 
-#if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
+if [[ ! -e $systemd_service_dir/$xo_service ]] ; then
 
-#/bin/cat << EOF >> $systemd_service_dir/$xo_service
-## systemd service for XO-Server.
+/bin/cat << EOF >> $systemd_service_dir/$xo_service
+# systemd service for XO-Server.
 
-#[Unit]
-#Description= XO Server
-#After=network-online.target
+[Unit]
+Description= XO Server
+After=network-online.target
 
-#[Service]
-#WorkingDirectory=/opt/xo-server/
-#ExecStart=/usr/local/bin/node ./bin/xo-server
-#Restart=always
-#SyslogIdentifier=xo-server
+[Service]
+WorkingDirectory=/opt/xo-server/
+ExecStart=/usr/local/bin/node ./bin/xo-server
+Restart=always
+SyslogIdentifier=xo-server
 
-#[Install]
-#WantedBy=multi-user.target
-#EOF
-#fi
+[Install]
+WantedBy=multi-user.target
+EOF
+fi
 
-#sudo /bin/chmod +x $systemd_service_dir/$xo_service
-#sudo /bin/systemctl enable $xo_service
-#sudo /bin/systemctl start $xo_service
+sudo /bin/chmod +x $systemd_service_dir/$xo_service
+sudo /bin/systemctl enable $xo_service
+sudo /bin/systemctl start $xo_service

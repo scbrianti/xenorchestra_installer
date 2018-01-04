@@ -8,7 +8,7 @@ The default username and password are applied, admin@admin.net and admin for the
 
     sudo bash
     <password>
-    sudo curl https://raw.githubusercontent.com/Jarli01/xenorchestra_installer/master/xo_install.sh | bash
+    sudo curl https://raw.githubusercontent.com/scbrianti/xenorchestra_installer/master/xo_install.sh | bash
     <password>
     
     

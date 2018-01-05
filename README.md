@@ -1,5 +1,7 @@
 # xenorchestra_installer
 
+OS Test: Ubuntu 16.04
+
 The single line installation required the following steps from a root shell. 
 
 Confirm your VM's IP Address before starting the script so you know where to login to. 

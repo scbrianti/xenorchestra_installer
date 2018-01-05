@@ -16,7 +16,7 @@ xo_service="xo-server.service"
 #Install node and yarn
 cd /opt
 
-curl -sL $node_source | sudo -E bash -
+curl -sL $node_source | -E bash -
 curl -sS $yarn_gpg | apt-key add -
 echo "$yarn_repo" | tee /etc/apt/sources.list.d/yarn.list
 apt-get update
